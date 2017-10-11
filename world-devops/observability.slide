@@ -1,0 +1,230 @@
+Observability in the Age of Microservices
+Tags: devops, observability, monitoring
+12 Oct 2017
+
+Arpit Mohan
+CTO, Bicycle AI
+@mohanarpit
+me@arpitmohan.com
+
+* Why am I talking about this today?
+.image good-weather.jpg
+
+* Why am I talking about this today?
+.image bad-weather.jpg
+
+* Why am I talking about this today?
+
+- With the increasing popularity of microservices, the nature of “failure” is changing
+- Building observable systems is the key to keeping abreast with this change
+- To navigate this brave new world successfully, gaining visibility into our services and infrastructure becomes more important than ever
+.image ooda-loop.png
+
+: A traditional 3 layered system of webserver, app server and DB no longer exist.
+: Having a bunch of services interacting with each other introduces new failure points
+: and new failure reasons.
+: before to successfully understand, operate, maintain and evolve these, we need new tools and new philosophies
+
+* What is observability?
+
+- An observable system is one that exposes enough data about itself so that generating information (finding answers to questions yet to be formulated) and easily accessing this information becomes simple.
+
+- 3 pillars of observability:
+  - Monitoring
+  - Logging
+  - Tracing
+
+
+: It’s the combination of multiple facets that allow a team to debug unforeseen circumstances and allow them to plug those gaps faster.
+: What are the challenges to each of them
+: We'll go over some of the tradeoffs that we encounter whenever we talk about each of these facets
+: The aim of this talk is not to give a catch-all answer for everything
+: but instead What I hope to achieve with this presentation is leave you with some ideas
+: and hopefully some questions that you can try to answer as you design systems
+: with the goal of bringing better visibility to them.
+
+* Isn't monitoring enough?
+
+* Isn't monitoring enough?
+  - observe and check the progress or quality of (something) over a period of time
+  keep under systematic review.
+
+  - maintain regular surveillance over.
+
+- Traditional monitoring tracked known failures and aimed to fix them
+- As complexity of services increase, failure modes increase as well
+
+* Isn't monitoring enough?
+- Platforms such as Kubernetes, ECS etc are taking care of the little things
+- Humans now have to contend with nuanced failure modes
+- The scope of monitoring needs to change to keep up with our new world
+
+: Talk about failure centric architecture where it's better to fail than be up.
+: Embrace the failure and degrade gracefully. Google SRE book.
+
+* Blackbox Monitoring
+.image uptime-monitor.png
+.caption _Uptime_
+- Polling
+
+* Whitebox Monitoring
+- Metrics
+- Logs
+- Traces
+
+
+_Whitebox_ _Monitoring_ *:* _Observability_ *:::* _Data_ *:* _Information_
+
+- Observability isn't just about data collection. It's also about being queryable.
+
+* 3 Pillars of Observability
+
+* Logs
+- *Plaintext*: Apache, Nginx
+- *Structured*: JSON
+- *Binary*: Protobuf, MySQL binlog
+
+* Logs
+.image service-logs.png
+
+: IMP: Extract information from data to answer questions.
+: Eg: Or do we want information about why a specific service crashed? GC Pauses?
+
+
+* Tracing
+- A method to this madness
+- Allow debugging requests spanning multiple service interfaces
+.image service-call-graph.png
+: Represented as a directed acyclic graph
+
+* Metrics
+.html tweet.html
+
+- It's *NOT*!
+
+* Metrics
+Definition
+
+  a set of numbers that give information about a particular process or activity.
+
+Time Series
+
+  a list of numbers relating to a particular activity, which is recorded at regular periods
+  of time and then studied. Time series are typically used to study,
+  for example, sales, orders, income, etc.
+
+* Metrics
+
+*Old* *School*
+- Graphite
+- Statsd
+
+*New* *School*
+- Prometheus
+
+  - Allows us to create labels for each data point. Each new label creates a new time series dataset
+  - Name + Labels = ID
+  - Timestamp + Value = Sample
+  - Being Queryable!
+
+: High degree of dimensionality of data.
+: If name / label changes, new time series
+: Float64 value + millisecond time precision
+
+* Characteristics of each pillar
+
+* Logs
+*Pros*
+- Super simple to generate
+- Granular information
+- Rich local context
+
+*Cons*
+- Logging libraries aren't very performant
+- Probability of getting lost in transmission (unless _RELP_ is used)
+- Querying is expensive
+- ELK; _a_ _necessary_ _evil_
+- Cannot sample as that defeats the purpose of logging
+
+* Metrics
+*Pros*
+- Generating, storing & transmitting has a constant overhead
+- Math-foo is valid
+- More amenable to generate alerts on
+
+*Cons*
+- System scoped. Poor context.
+
+: Prometheus will generate a new time series if we log each request
+
+* Tracing
+*Pros*
+- Can track a request throughout the system
+- Can add metadata to requests for richer debugging
+- Standardization: Zipkin, OpenTracing
+
+*Cons*
+- Hardest to retrofit
+- Polyglot systems
+
+: Talk about sampling of traces
+
+* Best Practices
+
+* Event Throttling
+- Instead of log levels, can we throttle each service?
+- Hierarchy of logs.
+  User requests > Background jobs
+
+* Sampling
+- Dynamic sampling is a developer's friend
+
+* Stream Processing
+- Log processing *is* Stream Processing
+
+- Querying logs is similar to querying an OLAP datastore
+  - Product Manager: Number of times User A logged in
+  - Developer: Number of times User A logged in with page load > 0.5 sec
+  - Developer: Number of times User A viewed product logo that wasn't served from cache
+
+- If all the logs are being piped into Kafka, we can use KSQL
+
+: Drawbacks to retrofitting Kafka
+: Standardized logging spec akin to tracing
+
+* Metrics
+- Push vs Pull
+- Time series explosion
+- Not more than 7-10 signals to be "monitored"
+
+: Nagios vs Prometheus
+: New labels generate new time series
+
+* Tracing
+- Service meshes that standardize & implement request tracing
+- Can treat services as blackboxes and rely on the mesh for instrumentation
+
+* Exception Tracking
+- Tools like Takipi provide a lot more context in the event of an exception
+- Full tracebacks, local variables, inputs on each subroutine
+
+* Conclusion
+- Observability is the ability to build systems knowing well that they are Frankenstein monsters
+.image frankenstein.jpg
+
+* Conclusion
+- Understanding that code is always broken in some way
+.image swimming-combined.jpg
+
+: Works on my machine vs production
+
+* Conclusion
+- Allows us to fix our own service in production
+.image great-power.jpg
+
+* Conclusion
+.image calvin-culture.png
+
+: Observability — in and of itself, and like most other things — isn’t particularly useful.
+: The value of the Observability of a system directly stems from the business
+: value we derive from it.
