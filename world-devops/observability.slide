@@ -127,6 +127,7 @@ Time Series
   - Name + Labels = ID
   - Timestamp + Value = Sample
   - Being Queryable!
+.image prometheus-format.jpg
 
 : High degree of dimensionality of data.
 : If name / label changes, new time series
@@ -180,7 +181,7 @@ Time Series
 * Best Practices - Sampling
 - Dynamic sampling is a developer's friend
 
-:Different from sampling because it's changed by operator and not built into the service
+: Different from sampling because it's changed by operator and not built into the service
 
 * Best Practices - Stream Processing
 - Log processing *is* Stream Processing
