@@ -42,6 +42,7 @@ me@arpitmohan.com
 : but instead What I hope to achieve with this presentation is leave you with some ideas
 : and hopefully some questions that you can try to answer as you design systems
 : with the goal of bringing better visibility to them.
+: Talk a little bit about the history of observable systems
 
 * Isn't monitoring enough?
 
@@ -73,7 +74,7 @@ me@arpitmohan.com
 - Traces
 
 
-_Whitebox_ _Monitoring_ *:* _Observability_ *:::* _Data_ *:* _Information_
+_Whitebox_ _Monitoring_ *:* _Observability_ *::* _Data_ *:* _Information_
 
 - Observability isn't just about data collection. It's also about being queryable.
 
@@ -171,15 +172,17 @@ Time Series
 
 * Best Practices
 
-* Event Throttling
+* Best Practices - Event Throttling
 - Instead of log levels, can we throttle each service?
 - Hierarchy of logs.
   User requests > Background jobs
 
-* Sampling
+* Best Practices - Sampling
 - Dynamic sampling is a developer's friend
 
-* Stream Processing
+:Different from sampling because it's changed by operator and not built into the service
+
+* Best Practices - Stream Processing
 - Log processing *is* Stream Processing
 
 - Querying logs is similar to querying an OLAP datastore
@@ -192,7 +195,7 @@ Time Series
 : Drawbacks to retrofitting Kafka
 : Standardized logging spec akin to tracing
 
-* Metrics
+* Best Practices - Metrics
 - Push vs Pull
 - Time series explosion
 - Not more than 7-10 signals to be "monitored"
@@ -200,11 +203,11 @@ Time Series
 : Nagios vs Prometheus
 : New labels generate new time series
 
-* Tracing
+* Best Practices - Tracing
 - Service meshes that standardize & implement request tracing
 - Can treat services as blackboxes and rely on the mesh for instrumentation
 
-* Exception Tracking
+* Best Practices - Exception Tracking
 - Tools like Takipi provide a lot more context in the event of an exception
 - Full tracebacks, local variables, inputs on each subroutine
 
