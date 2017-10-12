@@ -55,6 +55,8 @@ me@arpitmohan.com
 - Traditional monitoring tracked known failures and aimed to fix them
 - As complexity of services increase, failure modes increase as well
 
+.image monitoring-nature.jpg
+
 * Isn't monitoring enough?
 - Platforms such as Kubernetes, ECS etc are taking care of the little things
 - Humans now have to contend with nuanced failure modes
@@ -201,6 +203,7 @@ Time Series
 
 * Best Practices - Metrics
 - Push vs Pull
+.image push-v-pull.jpg
 - Time series explosion
 - Not more than 7-10 signals to be "monitored"
 
