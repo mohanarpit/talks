@@ -95,7 +95,7 @@ _Whitebox_ _Monitoring_ *:* _Observability_ *::* _Data_ *:* _Information_
 * Tracing
 - A method to this madness
 - Allow debugging requests spanning multiple service interfaces
-.image service-call-graph.png
+.image basic-architecture.jpg
 : Represented as a directed acyclic graph
 
 * Metrics
@@ -127,15 +127,18 @@ Time Series
   - Name + Labels = ID
   - Timestamp + Value = Sample
   - Being Queryable!
+
 .image prometheus-format.jpg
+
 
 : High degree of dimensionality of data.
 : If name / label changes, new time series
 : Float64 value + millisecond time precision
+: Talk about the example of http 500 errors and how we can query differently on both platforms
 
 * Characteristics of each pillar
 
-* Logs
+* Characteristics - Logs
 *Pros*
 - Super simple to generate
 - Granular information
@@ -148,7 +151,7 @@ Time Series
 - ELK; _a_ _necessary_ _evil_
 - Cannot sample as that defeats the purpose of logging
 
-* Metrics
+* Characteristics - Metrics
 *Pros*
 - Generating, storing & transmitting has a constant overhead
 - Math-foo is valid
@@ -159,7 +162,7 @@ Time Series
 
 : Prometheus will generate a new time series if we log each request
 
-* Tracing
+* Characteristics - Tracing
 *Pros*
 - Can track a request throughout the system
 - Can add metadata to requests for richer debugging
