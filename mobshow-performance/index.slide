@@ -1,0 +1,114 @@
+Performance at Mobshow
+Tags: java, performance, monitoring
+07 Sep 2018
+
+Arpit Mohan
+ex-CTO, Mobshow
+@mohanarpit
+me@arpitmohan.com
+
+* Prologue
+- *Mobshow*: An Interactive Video Platform
+.image mobshow-question-screenshot.webp _ 250
+
+* The Situation
+- Growing at 15% day-on-day
+- During promotional periods, growing at 50% day-on-day
+- Small team
+
+* Problems
+- High concurrency 
+    var min_concurrency = 75,000 req/sec
+    var expected_concurrency = 500,000 req/sec
+
+- Heavy spikes in load
+
+- Unforgiving SLA ( < 1 sec )
+    var max_response_time = 1 sec
+    var 95_percentile_response_time = 0.1 sec
+
+- Episode quality ∝ user growth
+
+- Low Turn-Around-Time. 2x7 shows a week.
+
+* What did we do?
+
+* Define the problem
+- Determine parameters of success
+    How much concurrency? 
+ 
+    How much load on CPU/DB/Network?
+ 
+    How much SLA?
+
+* Instrumentation
+- Find a good instrumentation platform
+    Don't re-invent the wheel. Invest in existing products. 
+- No relic like *New* *Relic*
+- Find the slowest bit and optimize it. Rinse & Repeat.
+
+* Scale Up & Scale Out
+- Buy time for the team
+- Equivalent to technical debt. _Don't_ _forget_ _to_ _pay_ _it_ _back_ _!_
+    At our worst, we were running 640 cores with a 32 core RDS DB for each show
+
+* Load Testing
+Super super important! 
+    
+- If you can't simulate it, you can't fix it.
+- Simulate real user load
+- Integrate into CI/CD
+
+*Tools*: 
+.link https://jmeter.apache.org/ Jmeter
+.link https://github.com/tsenart/vegeta Vegeta
+.link https://httpd.apache.org/docs/2.4/programs/ab.html Apache Bench
+
+*Example* *Success* 
+
+- SSL Offloading
+
+* Cache, cache baby!
+- Redis cluster to prevent Single Point of Failure 
+- Pub-Sub & Caching features in single tool
+- Cluster also splits the load between Redis instances
+
+* Do less work
+- No code is the fastest code
+    func doWork() {
+        return;
+    }
+ 
+*Examples*
+
+- Don't create new objects unnecessarily. Create views instead.
+- Prevent threads from being created
+- Connection pooling
+
+* Audit DB Queries
+
+Generally the worst culprit. Especially if you use an ORM.
+
+- No duplicates
+- No extra queries/fields
+- Batch queries if possible
+- Indexed queries only
+
+* Data Localization
+- Keep as much data in the JVM as possible. Avoid network calls like plague.
+- We used Guava for JVM caching
+
+*Story* *Time*
+
+: We would calculate the results at the end of each question and then save it to the DB & cache
+: Each JVM would then query the DB to get the final results
+: Instead we got the calculating instance to broadcast the results to a queue that everyone subscribes to
+: Each server on receiving the message would cache it in internal JVM.
+: Priority: 
+: 1. JVM
+: 2. Redis cache
+: 3. Mysql
+: Goes against "Do less work" but weighs better on data localization
+
+* Pre Warming
+- Warm up internal & external caches before expected spike
