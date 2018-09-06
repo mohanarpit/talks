@@ -70,12 +70,6 @@ Super super important!
 
 - [[https://medium.freecodecamp.org/how-we-fine-tuned-haproxy-to-achieve-2-000-000-concurrent-ssl-connections-d017e61a4d27][SSL Offloading]]
  
-
-* Cache cache baby!
-- Redis cluster to prevent Single Point of Failure 
-- Pub-Sub & Caching features in single tool
-- Cluster also splits the load between Redis instances
-
 * Do less work
 - No code is the fastest code
     func doWork() {
@@ -96,6 +90,11 @@ Generally the worst culprit. Especially if you use an ORM.
 - No extra queries/fields
 - Batch queries if possible
 - Indexed queries only
+
+* Cache cache baby!
+- Redis cluster to prevent Single Point of Failure 
+- Pub-Sub & Caching features in single tool
+- Cluster also splits the load between Redis instances
 
 * Data Localization
 - Keep as much data in the JVM as possible. Avoid network calls like plague.
