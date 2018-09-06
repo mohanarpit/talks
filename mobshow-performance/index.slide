@@ -31,6 +31,8 @@ me@arpitmohan.com
 
 - Low Turn-Around-Time. 2x7 shows a week.
 
+* Deployment Architecture
+
 * What did we do?
 
 * Define the problem
@@ -66,9 +68,10 @@ Super super important!
 
 *Example* *Success* 
 
-- SSL Offloading
+- [[https://medium.freecodecamp.org/how-we-fine-tuned-haproxy-to-achieve-2-000-000-concurrent-ssl-connections-d017e61a4d27][SSL Offloading]]
+ 
 
-* Cache, cache baby!
+* Cache cache baby!
 - Redis cluster to prevent Single Point of Failure 
 - Pub-Sub & Caching features in single tool
 - Cluster also splits the load between Redis instances
