@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ops in the age of Chat</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Ops in the age of Chat
+Arpit Mohan
+
+CTO @ Appsmith
+
+---
+
+# What is ChatOps?
+
+First there was Dev, then Ops, then DevOps & now *ChatOps*
+
+**C'mon! Stop the madness!**
+
+---
+
+# Wait, but why?
+
+- Single Interface that's familiar & easy to use
+
+- Allows for a shared terminal concept (Think: tmux & screen)
+
+- No custom logins
+
+- Multiple Integrations
+
+- Context sharing is simpler
+
+- More fun?
+
+---
+
+# Example Screenshots
+
+<img src="hello-example.png" width="300%">
+
+---
+
+# Example Screenshots
+<img src="shipit.png" width="200%">
+
+---
+
+# Example Screenshots
+<img src="simpsons.png" width="250%">
+
+---
+
+# Example Screenshots
+<img src="aws.png" width="170%">
+
+---
+# Tools used
+
+- Hubot
+
+- Slack
+
+- Coffee Script
+
+- Creativity :D
+
+---
+# Sample Code for the hello command
+
+```javascript
+robot.hear /hello|hi$/i, (res) ->
+
+response = ""
+
+helloResponses = robot.brain.get('helloResponses') * 1 or 0
+
+if helloResponses > 1
+
+    res.reply "Stop it already!"
+
+    #Resetting the count here. Ideally, this key should be reset every hour or so.
+
+    robot.brain.set 'helloResponses', 0
+
+else
+
+    res.reply "Howdy there! How can I help?"
+
+robot.brain.set 'helloResponses', helloResponses+1
+```
+---
+
+# Show me the code
+
+https://github.com/mohanarpit/hubot-gitlab-ci
+
+---
+# Areas of Improvement
+
+```shell
+@forger-bot Please deploy the master branch to the staging environment
+```
+
+### NLP Parsers
+- wit.ai
+- Dialogflow
+
+---
+
+# Other Alternatives
+
+- Lita (Ruby)
+
+- Errbot (Python)
+
+---
+class: center, middle
+# Thank You
+
+Github: [github.com/mohanarpit](https://github.com/mohanarpit)
+
+Website: [arpitmohan.com](https://arpitmohan.com)
+
+Twitter: @mohanarpit
+
+Email: [me@arpitmohan.com](mailto:me@arpitmohan.com)
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
